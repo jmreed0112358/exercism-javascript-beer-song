@@ -1,6 +1,6 @@
 var BeerSong = require('./beer-song');
 
-describe('BeerSong', function() {
+xdescribe('BeerSong', function() {
   var song = new BeerSong();
 
   it('prints an arbitrary verse', function() {
@@ -26,5 +26,29 @@ describe('BeerSong', function() {
   xit('sings the rest of the verses', function() {
     var expected = '3 bottles of beer on the wall, 3 bottles of beer.\nTake one down and pass it around, 2 bottles of beer on the wall.\n\n2 bottles of beer on the wall, 2 bottles of beer.\nTake one down and pass it around, 1 bottle of beer on the wall.\n\n1 bottle of beer on the wall, 1 bottle of beer.\nTake it down and pass it around, no more bottles of beer on the wall.\n\nNo more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall.\n';
     expect(song.sing(3)).toEqual(expected);
+  });
+});
+
+xdescribe('validateRange()', function() {
+
+});
+
+describe('validateVerse()', function() {
+  var beerSong = new BeerSong();
+
+  it('returns true for numbers in range', function() {
+    var i = 0;
+
+    for (i = 0 ; i <= 99 ; i++) {
+      expect(beerSong.validateVerse(i)).toEqual(true);
+    }
+  });
+
+  it('returns false for negative numbers', function() {
+    expect(beerSong.validateVerse(-10)).toEqual(false);
+  });
+
+  it('returns false for numbers that are too large', function() {
+    expect(beerSong.validateVerse(1000)).toEqual(false);
   });
 });
