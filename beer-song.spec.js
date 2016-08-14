@@ -4,7 +4,7 @@ var BeerSong = require('./beer-song'),
 const MIN = 0;
 const MAX = 99;
 
-describe('verse()', function() {
+xdescribe('verse()', function() {
   var song = new BeerSong();
 
   it('throws InvalidParameterException when given invalid verseNum, negative number', function() {
@@ -40,6 +40,41 @@ describe('verse()', function() {
 xdescribe('sing()', function() {
   var song = new BeerSong();
 
+  it('throws InvalidParameterException when given invalid input: startVerse > endVerse', function() {
+    expect(function() {
+      song.sing(20, 10);
+    }).toThrow(
+      new InvalidParameterException('Invalid verse range'));
+  });
+
+  it('throws InvalidParameterException when given invalid input: negative startVerse, valid endVerse', function() {
+    expect(function() {
+      song.sing(-10, 20);
+    }).toThrow(
+      new InvalidParameterException('Invalid verse range'));
+  });
+
+  it('throws InvalidParameterException when given invalid input: invalid startVerse and endVerse', function() {
+    expect(function() {
+      song.sing(-20, -10);
+    }).toThrow(
+      new InvalidParameterException('Invalid verse range'));
+  });
+
+  it('throws InvalidParameterException when given invalid input: valid startVerse, out of range endVerse', function() {
+    expect(function() {
+      song.sing(10, 2000);
+    }).toThrow(
+      new InvalidParameterException('Invalid verse range'));
+  });
+
+  it('throws InvalidParameterException when given invalid input: out of range startVerse and endVerse', function() {
+    expect(function() {
+      song.sing(1000, 2000);
+    }).toThrow(
+      new InvalidParameterException('Invalid verse range'));
+  });
+
   xit('sings several verses', function() {
     var expected = '8 bottles of beer on the wall, 8 bottles of beer.\nTake one down and pass it around, 7 bottles of beer on the wall.\n\n7 bottles of beer on the wall, 7 bottles of beer.\nTake one down and pass it around, 6 bottles of beer on the wall.\n\n6 bottles of beer on the wall, 6 bottles of beer.\nTake one down and pass it around, 5 bottles of beer on the wall.\n';
     expect(song.sing(8, 6)).toEqual(expected);
@@ -51,7 +86,7 @@ xdescribe('sing()', function() {
   });
 });
 
-xdescribe('validateRange()', function() {
+describe('validateRange()', function() {
   var beerSong = new BeerSong();
 
   it('returns true for numbers in range, no endVerse', function() {
@@ -81,8 +116,8 @@ xdescribe('validateRange()', function() {
     }
   });
 
-  it('returns false when startVerse > endVerse', function() {
-    expect(beerSong.validateRange(20, 10)).toEqual(false);
+  it('returns false when startVerse < endVerse', function() {
+    expect(beerSong.validateRange(10, 20)).toEqual(false);
   });
 
   it('returns false for negative numbers: startVerse', function() {
@@ -90,7 +125,7 @@ xdescribe('validateRange()', function() {
   });
 
   it('returns false for negative numbers: endVerse', function() {
-    expect(beerSong.validateRange(-20, -10)).toEqual(false);
+    expect(beerSong.validateRange(20, -10)).toEqual(false);
   });
 
   it('returns false for negative numbers: both startVerse and endVerse', function() {
@@ -98,15 +133,11 @@ xdescribe('validateRange()', function() {
   });
 
   it('returns false for out of range numbers: startVerse', function() {
-    expect(beerSong.validateRange(1000, 2000)).toEqual(false);
+    expect(beerSong.validateRange(2000, 10)).toEqual(false);
   });
 
-  it('returns false for out of range numbers: endVerse', function() {
-    expect(beerSong.validateRange(0, 1000)).toEqual(false);
-  });
-
-  it('returns false for out of range numbers: both startVerse and endVerse', function() {
-    expect(beerSong.validateRange(-10,-20)).toEqual(false);
+  it('returns false for out of range numbers: startVerse and endVerse', function() {
+    expect(beerSong.validateRange(2000, 1000)).toEqual(false);
   });
 });
 

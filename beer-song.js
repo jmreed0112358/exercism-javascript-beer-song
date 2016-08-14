@@ -40,14 +40,18 @@ BeerSong.prototype.verse = function(verseNum) {
 };
 
 BeerSong.prototype.sing = function(startVerse, endVerse) {
-  throw new NotImplementedException();
+  if (this.validateRange(startVerse, endVerse)) {
+    throw new NotImplementedException();
+  } else {
+    throw new InvalidParameterException('Invalid verse range');
+  }
 };
 
 BeerSong.prototype.validateRange = function(startVerse, endVerse) {
   if (endVerse === undefined) {
     return this.validateVerse(startVerse);
   } else {
-    return (startVerse <= endVerse && this.validateVerse(startVerse) && this.validateVerse(endVerse));
+    return (startVerse >= endVerse && this.validateVerse(startVerse) && this.validateVerse(endVerse));
   }
 };
 
