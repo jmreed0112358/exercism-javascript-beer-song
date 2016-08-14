@@ -16,7 +16,12 @@ BeerSong.prototype.verse = function(verseNum) {
   var output = '';
 
   if (this.validateVerse(verseNum)) {
-    if (verseNum === 1) {
+    if (verseNum === 2) {
+      output = verseNum + ' ' + BOTTLE_WORD + 's ' + ON_THE_WALL + ', ' + verseNum + ' ' + BOTTLE_WORD + 's ' + OF_BEER + '.';
+      output = output + '\n';
+      output = output + TAKE_ONE_DOWN + ', ' + (verseNum - 1) + ' ' + BOTTLE_WORD + ' ' + ON_THE_WALL + '.';
+      output = output + '\n';
+    } else if (verseNum === 1) {
       output = verseNum + ' ' + BOTTLE_WORD + ' ' + ON_THE_WALL + ', ' + verseNum + ' ' + BOTTLE_WORD + ' ' + OF_BEER + '.';
       output = output + '\n';
       output = output + TAKE_IT_DOWN + ', ' + 'no more ' + BOTTLE_WORD + 's ' + ON_THE_WALL + '.';
@@ -40,11 +45,25 @@ BeerSong.prototype.verse = function(verseNum) {
 };
 
 BeerSong.prototype.sing = function(startVerse, endVerse) {
+  var i = 0,
+    output = '';
+
   if (this.validateRange(startVerse, endVerse)) {
-    throw new NotImplementedException();
+    if (endVerse === undefined) {
+      endVerse = MIN;
+    }
+
+    for (i = startVerse ; i >= endVerse ; i--) {
+      output = output + this.verse(i);
+      if (i !== endVerse) {
+        output = output + '\n';
+      }
+    }
   } else {
     throw new InvalidParameterException('Invalid verse range');
   }
+
+  return output;
 };
 
 BeerSong.prototype.validateRange = function(startVerse, endVerse) {

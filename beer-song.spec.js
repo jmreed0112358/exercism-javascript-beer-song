@@ -4,7 +4,7 @@ var BeerSong = require('./beer-song'),
 const MIN = 0;
 const MAX = 99;
 
-xdescribe('verse()', function() {
+describe('verse()', function() {
   var song = new BeerSong();
 
   it('throws InvalidParameterException when given invalid verseNum, negative number', function() {
@@ -37,50 +37,55 @@ xdescribe('verse()', function() {
   });
 });
 
-xdescribe('sing()', function() {
+describe('sing()', function() {
   var song = new BeerSong();
 
-  it('throws InvalidParameterException when given invalid input: startVerse > endVerse', function() {
+  it('throws InvalidParameterException when given invalid input: startVerse < endVerse', function() {
     expect(function() {
-      song.sing(20, 10);
+      song.sing(10, 20);
     }).toThrow(
       new InvalidParameterException('Invalid verse range'));
   });
 
-  it('throws InvalidParameterException when given invalid input: negative startVerse, valid endVerse', function() {
+  it('throws InvalidParameterException when given invalid input: valid startVerse, negative endVerse', function() {
     expect(function() {
-      song.sing(-10, 20);
+      song.sing(10, -10);
     }).toThrow(
       new InvalidParameterException('Invalid verse range'));
   });
 
-  it('throws InvalidParameterException when given invalid input: invalid startVerse and endVerse', function() {
+  it('throws InvalidParameterException when given invalid input: negative startVerse and endVerse', function() {
     expect(function() {
       song.sing(-20, -10);
     }).toThrow(
       new InvalidParameterException('Invalid verse range'));
   });
 
-  it('throws InvalidParameterException when given invalid input: valid startVerse, out of range endVerse', function() {
+  it('throws InvalidParameterException when given invalid input: out of range startVerse, valid endVerse', function() {
     expect(function() {
-      song.sing(10, 2000);
+      song.sing(1000, 20);
     }).toThrow(
       new InvalidParameterException('Invalid verse range'));
   });
 
   it('throws InvalidParameterException when given invalid input: out of range startVerse and endVerse', function() {
     expect(function() {
-      song.sing(1000, 2000);
+      song.sing(2000, 1000);
     }).toThrow(
       new InvalidParameterException('Invalid verse range'));
   });
 
-  xit('sings several verses', function() {
+  it('sings one verse', function() {
+    var expected = '8 bottles of beer on the wall, 8 bottles of beer.\nTake one down and pass it around, 7 bottles of beer on the wall.\n';
+    expect(song.sing(8, 8)).toEqual(expected);
+  });
+
+  it('sings several verses', function() {
     var expected = '8 bottles of beer on the wall, 8 bottles of beer.\nTake one down and pass it around, 7 bottles of beer on the wall.\n\n7 bottles of beer on the wall, 7 bottles of beer.\nTake one down and pass it around, 6 bottles of beer on the wall.\n\n6 bottles of beer on the wall, 6 bottles of beer.\nTake one down and pass it around, 5 bottles of beer on the wall.\n';
     expect(song.sing(8, 6)).toEqual(expected);
   });
 
-  xit('sings the rest of the verses', function() {
+  it('sings the rest of the verses', function() {
     var expected = '3 bottles of beer on the wall, 3 bottles of beer.\nTake one down and pass it around, 2 bottles of beer on the wall.\n\n2 bottles of beer on the wall, 2 bottles of beer.\nTake one down and pass it around, 1 bottle of beer on the wall.\n\n1 bottle of beer on the wall, 1 bottle of beer.\nTake it down and pass it around, no more bottles of beer on the wall.\n\nNo more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall.\n';
     expect(song.sing(3)).toEqual(expected);
   });
@@ -111,7 +116,7 @@ describe('validateRange()', function() {
 
     for (i = MIN ; i <= MAX ; i++ ) {
       for (j = MIN ; j <= MAX ; j++ ) {
-        expect(beerSong.validateRange(i, i)).toEqual(true);
+        expect(beerSong.validateRange(i, j)).toEqual(true);
       }
     }
   });
@@ -141,7 +146,7 @@ describe('validateRange()', function() {
   });
 });
 
-xdescribe('validateVerse()', function() {
+describe('validateVerse()', function() {
   var beerSong = new BeerSong();
 
   it('returns true for numbers in range', function() {
