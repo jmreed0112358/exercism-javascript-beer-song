@@ -114,8 +114,8 @@ describe('validateRange()', function() {
     var i = 0,
       j = 0;
 
-    for (i = MIN ; i <= MAX ; i++ ) {
-      for (j = MIN ; j <= MAX ; j++ ) {
+    for (i = MAX ; i >= MIN ; i--) {
+      for (j = i; j >= MIN ; j--) {
         expect(beerSong.validateRange(i, j)).toEqual(true);
       }
     }
