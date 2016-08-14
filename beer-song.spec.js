@@ -1,5 +1,8 @@
 var BeerSong = require('./beer-song');
 
+const MIN = 0;
+const MAX = 99;
+
 xdescribe('BeerSong', function() {
   var song = new BeerSong();
 
@@ -29,17 +32,72 @@ xdescribe('BeerSong', function() {
   });
 });
 
-xdescribe('validateRange()', function() {
+describe('validateRange()', function() {
+  var beerSong = new BeerSong();
 
+  it('returns true for numbers in range, no endVerse', function() {
+    var i = 0;
+
+    for (i = MIN ; i <= MAX ; i++) {
+      expect(beerSong.validateRange(i)).toEqual(true);
+    }
+  });
+
+  it('returns false for negative numbers, no endVerse', function() {
+    expect(beerSong.validateRange(-10)).toEqual(false);
+  });
+
+  it('returns false for numbers that are too large, no endVerse', function() {
+    expect(beerSong.validateRange(1000)).toEqual(false);
+  });
+
+  it('returns true for numbers in range, with endVerse', function() {
+    var i = 0,
+      j = 0;
+
+    for (i = MIN ; i <= MAX ; i++ ) {
+      for (j = MIN ; j <= MAX ; j++ ) {
+        expect(beerSong.validateRange(i, i)).toEqual(true);
+      }
+    }
+  });
+
+  it('returns false when startVerse > endVerse', function() {
+    expect(beerSong.validateRange(20, 10)).toEqual(false);
+  });
+
+  it('returns false for negative numbers: startVerse', function() {
+    expect(beerSong.validateRange(-10, 0)).toEqual(false);
+  });
+
+  it('returns false for negative numbers: endVerse', function() {
+    expect(beerSong.validateRange(-20, -10)).toEqual(false);
+  });
+
+  it('returns false for negative numbers: both startVerse and endVerse', function() {
+    expect(beerSong.validateRange(-10,-20)).toEqual(false);
+  });
+
+  it('returns false for out of range numbers: startVerse', function() {
+    expect(beerSong.validateRange(1000, 2000)).toEqual(false);
+  });
+
+  it('returns false for out of range numbers: endVerse', function() {
+    expect(beerSong.validateRange(0, 1000)).toEqual(false);
+  });
+
+  it('returns false for out of range numbers: both startVerse and endVerse', function() {
+    expect(beerSong.validateRange(-10,-20)).toEqual(false);
+  });
 });
 
-describe('validateVerse()', function() {
+xdescribe('validateVerse()', function() {
   var beerSong = new BeerSong();
 
   it('returns true for numbers in range', function() {
     var i = 0;
 
-    for (i = 0 ; i <= 99 ; i++) {
+    for (i = MIN ; i <= MAX ; i++) {
       expect(beerSong.validateVerse(i)).toEqual(true);
     }
   });
