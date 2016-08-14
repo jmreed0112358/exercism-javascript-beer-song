@@ -1,25 +1,44 @@
-var BeerSong = require('./beer-song');
+var BeerSong = require('./beer-song'),
+  InvalidParameterException = require('./exceptions/InvalidParameterException.js');
 
 const MIN = 0;
 const MAX = 99;
 
-xdescribe('BeerSong', function() {
+describe('verse()', function() {
   var song = new BeerSong();
+
+  it('throws InvalidParameterException when given invalid verseNum, negative number', function() {
+    expect(function() {
+      song.verse(-10);
+    }).toThrow(
+      new InvalidParameterException('Invalid verseNum'));
+  });
+
+  it('throws InvalidParameterException when given invalid verseNum, out of range number', function() {
+    expect(function() {
+      song.verse(1000);
+    }).toThrow(
+      new InvalidParameterException('Invalid verseNum'));
+  });
 
   it('prints an arbitrary verse', function() {
     var expected = '8 bottles of beer on the wall, 8 bottles of beer.\nTake one down and pass it around, 7 bottles of beer on the wall.\n';
     expect(song.verse(8)).toEqual(expected);
   });
 
-  xit('handles 1 bottle', function() {
+  it('handles 1 bottle', function() {
     var expected = '1 bottle of beer on the wall, 1 bottle of beer.\nTake it down and pass it around, no more bottles of beer on the wall.\n';
     expect(song.verse(1)).toEqual(expected);
   });
 
-  xit('handles 0 bottles', function() {
+  it('handles 0 bottles', function() {
     var expected = 'No more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall.\n';
     expect(song.verse(0)).toEqual(expected);
   });
+});
+
+xdescribe('sing()', function() {
+  var song = new BeerSong();
 
   xit('sings several verses', function() {
     var expected = '8 bottles of beer on the wall, 8 bottles of beer.\nTake one down and pass it around, 7 bottles of beer on the wall.\n\n7 bottles of beer on the wall, 7 bottles of beer.\nTake one down and pass it around, 6 bottles of beer on the wall.\n\n6 bottles of beer on the wall, 6 bottles of beer.\nTake one down and pass it around, 5 bottles of beer on the wall.\n';
@@ -32,7 +51,7 @@ xdescribe('BeerSong', function() {
   });
 });
 
-describe('validateRange()', function() {
+xdescribe('validateRange()', function() {
   var beerSong = new BeerSong();
 
   it('returns true for numbers in range, no endVerse', function() {
